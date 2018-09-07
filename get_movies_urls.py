@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+import get_movie_info
+
 
 SOUP = None
 
