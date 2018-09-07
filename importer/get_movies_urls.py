@@ -1,9 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-import get_movie_info
-
-
 SOUP = None
 
 
@@ -24,7 +21,7 @@ def is_coming_soon_movie(css_class):
     return css_class == "coming-soon-mark"
 
 
-def coming_soon(soup=SOUP):
+def upcoming(soup=SOUP):
     # global SOUP
     result = []
     movies = soup.find_all(
@@ -46,12 +43,9 @@ def all(soup=SOUP):
     return result
 
 
-def in_the_theatre():
-    all_movies = all()
-    soon = coming_soon()
-    in_the_theatre = set(all_movies) - set(soon)
-    return in_the_theatre
+def available():
+    return set(all()) - set(upcoming())
 
 
 if __name__ == "__main__":
-    print(in_the_theatre())
+    print(available())
