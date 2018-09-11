@@ -8,17 +8,20 @@ TIMEOUT = 600
 
 
 async def fetch(session, sem, url, type_):
-    async with sem:
-        headers = {'User-Agent': 'Google Spider'}
-        async with session.get(url, headers=headers) as response:
-            text = await response.read()
-        soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
-        if type_ == 'upcoming':
-            result = get_upcoming_info(soup)
-        else:
-            result = get_available_info(soup)
-        result['url'] = url
-        return result
+    try:
+        async with sem:
+            headers = {'User-Agent': 'Google Spider'}
+            async with session.get(url, headers=headers) as response:
+                text = await response.read()
+                soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
+                if type_ == 'upcoming':
+                    result = get_upcoming_info(soup)
+                else:
+                    result = get_available_info(soup)
+                    result['url'] = url
+            return result
+    except:
+        print(url)
 
 
 async def get_movies_data(urls, type_):

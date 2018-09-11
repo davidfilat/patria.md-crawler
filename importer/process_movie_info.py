@@ -54,7 +54,6 @@ def get_image(soup):
     m = re.match(p, image)
     return ''.join(m.groups())
 
-
 def get_trailer_embed(soup):
     return soup.select_one('.trailer iframe')['src']
 
@@ -95,7 +94,8 @@ if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
     # filename = "output.html"
     # with open(filename, "r") as f:
-    url = 'https://patria.md/movies/spionul-care-mi-a-dat-papucii/'
+    # url = 'https://patria.md/movies/spionul-care-mi-a-dat-papucii/'
+    url = "http://patria.md/movies/meg-confruntare-in-adancuri/"
     r = requests.get(url)
     if r.status_code >= 200:
         soup = soup = BeautifulSoup(r.text, 'html.parser')
