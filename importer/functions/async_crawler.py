@@ -1,14 +1,19 @@
 import asyncio
 import aiohttp
 from bs4 import BeautifulSoup
-from process_movie_info import get_upcoming_info, get_available_info
+from .process_movie_info import get_upcoming_info, get_available_info
+import traceback
+import pushover
 
 CONCURRENCY = 8
 TIMEOUT = 600
+pushover.init("a8x1dg2jk8kmtepef5zdtfnbsvvmmy")
+PUSHOVER = pushover.Client("ug5eogk24pdq36nqacu8anur4r4js9")
 
 
 async def fetch(session, sem, url, type_):
     try:
+
         async with sem:
             headers = {'User-Agent': 'Google Spider'}
             async with session.get(url, headers=headers) as response:
@@ -20,7 +25,12 @@ async def fetch(session, sem, url, type_):
                     result = get_available_info(soup)
                     result['url'] = url
             return result
-    except:
+
+    except Exception as e:
+        print(e)
+        PUSHOVER.send_message(
+            str(url + "\n" + str(e)), title="Patria importer error!")
+        traceback.print_exc()
         print(url)
 
 
@@ -36,7 +46,7 @@ def get_movies_info(urls, type_='available'):
     loop = asyncio.get_event_loop()
     future = asyncio.ensure_future(get_movies_data(urls, type_))
     data = loop.run_until_complete(future)
-    print(data)
+
     return data
 
 
