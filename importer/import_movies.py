@@ -11,6 +11,12 @@ def available():
 
 
 def upcoming():
+    """Gets the schedule for the upcoming movies at Patria Cinema 
+    (data crawled from the official patria.md site)
+
+    Returns:
+        dict -- {'image', 'release_date', 'title', 'trailer', 'trailer_embed'}
+    """
     return get_movies_info(get_movies_urls.upcoming(), type_='upcoming')
 
 
@@ -21,7 +27,7 @@ def import_all(filename='data.json', save=False):
         "available": available_list,
         "upcoming": upcoming_list
     }
-    if save == True:
+    if save:
         with open(filename, 'w') as f:
             f.write(json.dumps(data))
 
