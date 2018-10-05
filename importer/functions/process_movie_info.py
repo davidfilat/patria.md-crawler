@@ -3,7 +3,7 @@ import re
 
 def get_title(soup):
     title = soup.title.string.strip()
-    ri = title.find('|')
+    ri = title.find("|")
     title = title[:ri].strip()
     return title
 
@@ -15,33 +15,37 @@ def get_release_date(soup):
 
 def get_duration(soup):
     try:
-        duration = soup.select_one('.duration').text
-        return int(duration[:duration.find('min')].strip())
+        duration = soup.select_one(".duration").text
+        return int(duration[: duration.find("min")].strip())
     except:
         return None
 
 
 def get_schedule(soup):
     previous_schedule = None
-    schedules_soup = soup.select('.cinema')
+    schedules_soup = soup.select(".cinema")
     schedules_dict = []
     for schedule_soup in schedules_soup:
         schedule_soup = schedule_soup.parent
-        if schedule_soup.select_one('.time').text.strip() == 'timpul':
+        if schedule_soup.select_one(".time").text.strip() == "timpul":
             continue
 
-        elif schedule_soup.select_one('.cinema > span') == None:
+        elif schedule_soup.select_one(".cinema > span") == None:
             schedule = previous_schedule
-            schedule['schedule'].append(
-                [schedule_soup.select_one('.hall').text.strip(), schedule_soup.select_one('.time').text.strip()])
+            schedule["schedule"].append(
+                [
+                    schedule_soup.select_one(".hall").text.strip(),
+                    schedule_soup.select_one(".time").text.strip(),
+                ]
+            )
 
         else:
-            cinema = schedule_soup.select_one('.cinema > span').text.strip()
-            hall = schedule_soup.select_one('.hall').text.strip()
-            time = schedule_soup.select_one('.time').text.strip()
-            schedule = {'cinema': cinema}
-            schedule['schedule'] = []
-            schedule['schedule'].append([hall, time])
+            cinema = schedule_soup.select_one(".cinema > span").text.strip()
+            hall = schedule_soup.select_one(".hall").text.strip()
+            time = schedule_soup.select_one(".time").text.strip()
+            schedule = {"cinema": cinema}
+            schedule["schedule"] = []
+            schedule["schedule"].append([hall, time])
 
             previous_schedule = schedule
             schedules_dict.append(schedule)
@@ -49,42 +53,42 @@ def get_schedule(soup):
 
 
 def get_image(soup):
-    p = re.compile('(.*)-...x...(.*)')
-    image = soup.select_one('.attachment-movie-thumb-big')['src']
+    p = re.compile("(.*)-...x...(.*)")
+    image = soup.select_one(".attachment-movie-thumb-big")["src"]
     m = re.match(p, image)
-    return ''.join(m.groups())
+    return "".join(m.groups())
 
 
 def get_trailer_embed(soup):
-    return soup.select_one('.trailer iframe')['src']
+    return soup.select_one(".trailer iframe")["src"]
 
 
 def get_trailer_link(soup):
-    p = re.compile('(.*)\/embed\/(.*)')
-    link = soup.select_one('.trailer iframe')['src']
+    p = re.compile("(.*)\/embed\/(.*)")
+    link = soup.select_one(".trailer iframe")["src"]
     m = re.match(p, link)
-    return '/watch?v='.join(m.groups())
+    return "/watch?v=".join(m.groups())
 
 
 def get_available_info(soup):
     return {
-        'title': get_title(soup),
-        'release_date': get_release_date(soup),
-        'schedule': get_schedule(soup),
-        'duration': get_duration(soup),
-        'image': get_image(soup),
-        'trailer': get_trailer_link(soup),
-        'trailer_embed': get_trailer_embed(soup)
+        "title": get_title(soup),
+        "release_date": get_release_date(soup),
+        "schedule": get_schedule(soup),
+        "duration": get_duration(soup),
+        "image": get_image(soup),
+        "trailer": get_trailer_link(soup),
+        "trailer_embed": get_trailer_embed(soup),
     }
 
 
 def get_upcoming_info(soup):
     return {
-        'title': get_title(soup),
-        'release_date': get_release_date(soup),
-        'image': get_image(soup),
-        'trailer': get_trailer_link(soup),
-        'trailer_embed': get_trailer_embed(soup)
+        "title": get_title(soup),
+        "release_date": get_release_date(soup),
+        "image": get_image(soup),
+        "trailer": get_trailer_link(soup),
+        "trailer_embed": get_trailer_embed(soup),
     }
 
 
@@ -92,6 +96,7 @@ if __name__ == "__main__":
     import requests
     from bs4 import BeautifulSoup
     import pprint
+
     pp = pprint.PrettyPrinter(indent=4)
     # filename = "output.html"ls
     # filename = "output.html"ls
@@ -100,5 +105,5 @@ if __name__ == "__main__":
     url = "http://patria.md/movies/meg-confruntare-in-adancuri/"
     r = requests.get(url)
     if r.status_code >= 200:
-        soup = soup = BeautifulSoup(r.text, 'html.parser')
+        soup = soup = BeautifulSoup(r.text, "html.parser")
         pp.pprint(get_available_info(soup))
