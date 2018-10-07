@@ -1,8 +1,11 @@
 import asyncio
-import aiohttp
+
 from bs4 import BeautifulSoup
-from .process_movie_info import get_upcoming_info, get_available_info
+
+import aiohttp
 import pushover
+
+from .process_movie_info import get_available_info, get_upcoming_info
 
 CONCURRENCY = 8
 TIMEOUT = 600
