@@ -3,7 +3,7 @@ from importer.import_movies import import_all
 
 app = Flask(__name__)
 
-// FIXME: Delete file or rewrite each 6 hours @FIXME
+# FIXME: Delete file or rewrite each 6 hours @FIXME
 try:
     with open("data.json", "r") as f:
         data = json.load(f)
