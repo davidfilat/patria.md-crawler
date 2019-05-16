@@ -1,0 +1,2 @@
+GET https://api.themoviedb.org/3/movie/449562?api_key=8c9f7d100758adf3b5d96d4488c28d15&language=ro-RO
+content-type: application/json
