@@ -28,7 +28,7 @@ def upcoming(soup=SOUP):
     for movie in movies:
         link = movie.find_previous_sibling()
         href = link.get("href")
-        result.append(href)
+        result.append(href + "?mode=normal")
     return result
 
 
@@ -38,7 +38,7 @@ def all(soup=SOUP):
     movies = soup.select(".movies-item > figure > a")
     for movie in movies:
         href = movie.get("href")
-        result.append(href)
+        result.append(href + "?mode=normal")
     return result
 
 

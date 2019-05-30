@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 flake8 = "*"
 pytest = "*"
+black = "*"
 
 [packages]
 aiohttp = ">=3.4.4"
@@ -27,9 +28,12 @@ webencodings = ">=0.5.1"
 yarl = ">=1.2.6"
 async_timeout = ">=3.0.0"
 Flask = ">=1.0.2"
-Jinja2 = ">=2.10"
-MarkupSafe = ">=1.0"
 Werkzeug = ">=0.14.1"
+flask-cors = "*"
+
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

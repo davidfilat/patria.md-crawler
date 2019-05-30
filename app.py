@@ -1,8 +1,10 @@
 from flask import Flask, json
+
+from flask_cors import CORS
 from importer.import_movies import import_all
 
 app = Flask(__name__)
-
+CORS(app)
 # FIXME: Delete file or rewrite each 6 hours @FIXME
 try:
     with open("data.json", "r") as f:
